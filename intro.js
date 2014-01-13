@@ -709,7 +709,7 @@
     };
 
     setTimeout(function() {
-      styleText += 'opacity: .8;';
+      styleText += 'opacity: .4;';
       overlayLayer.setAttribute('style', styleText);
     }, 10);
     return true;
