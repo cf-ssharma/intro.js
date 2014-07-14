@@ -182,43 +182,14 @@
       var skipButton     = targetElm.querySelector('.introjs-skipbutton'),
           nextStepButton = targetElm.querySelector('.introjs-nextbutton');
 
-      self._onKeyDown = function(e) {
-        if (e.keyCode === 27 && self._options.exitOnEsc == true) {
-          //escape key pressed, exit the intro
-          _exitIntro.call(self, targetElm);
-          //check if any callback is defined
-          if (self._introExitCallback != undefined) {
-            self._introExitCallback.call(self);
-          }
-        } else if(e.keyCode === 37) {
-          //left arrow
-          _previousStep.call(self);
-        } else if (e.keyCode === 39 || e.keyCode === 13) {
-          //right arrow or enter
-          _nextStep.call(self);
-          //prevent default behaviour on hitting Enter, to prevent steps being skipped in some browsers
-          if(e.preventDefault) {
-            e.preventDefault();
-          } else {
-            e.returnValue = false;
-          }
-        }
-      };
-
       self._onResize = function(e) {
         _setHelperLayerPosition.call(self, document.querySelector('.introjs-helperLayer'));
       };
 
       if (window.addEventListener) {
-        if (this._options.keyboardNavigation) {
-          window.addEventListener('keydown', self._onKeyDown, true);
-        }
         //for window resize
         window.addEventListener("resize", self._onResize, true);
       } else if (document.attachEvent) { //IE
-        if (this._options.keyboardNavigation) {
-          document.attachEvent('onkeydown', self._onKeyDown);
-        }
         //for window resize
         document.attachEvent("onresize", self._onResize);
       }
@@ -667,9 +638,6 @@
       skipTooltipButton.innerHTML = this._options.skipLabel;
     }
 
-    //Set focus on "next" button, so that hitting Enter always moves you onto the next step
-    nextTooltipButton.focus();
-
     //add target element position style
     targetElement.element.className += ' introjs-showElement';
 
@@ -812,7 +780,7 @@
     };
 
     setTimeout(function() {
-      styleText += 'opacity: .8;';
+      styleText += 'opacity: .4;';
       overlayLayer.setAttribute('style', styleText);
     }, 10);
     return true;
