@@ -448,6 +448,10 @@
         this._introChangeCallback.call(this, targetElement.element);
     }
 
+    if (typeof (this._introTourDetails) !== 'undefined') {
+        this._introTourDetails.call(this, this._direction, this._currentStep, targetElement.element);
+    }
+
     var self = this,
         oldHelperLayer = document.querySelector('.introjs-helperLayer'),
         elementPosition = _getOffset(targetElement.element);
@@ -780,7 +784,7 @@
     };
 
     setTimeout(function() {
-      styleText += 'opacity: .4;';
+      styleText += 'opacity: .3;';
       overlayLayer.setAttribute('style', styleText);
     }, 10);
     return true;
@@ -917,6 +921,14 @@
     onexit: function(providedCallback) {
       if (typeof (providedCallback) === 'function') {
         this._introExitCallback = providedCallback;
+      } else {
+        throw new Error('Provided callback for onexit was not a function.');
+      }
+      return this;
+    },
+    ontourguide: function(callback) {
+      if (typeof (callback) === 'function') {
+        this._introTourDetails = callback;
       } else {
         throw new Error('Provided callback for onexit was not a function.');
       }
