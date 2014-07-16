@@ -93,6 +93,7 @@
 
           if (floatingElementQuery == null) {
             floatingElementQuery = document.createElement('div');
+            if (currentItem.forcedElement)
             floatingElementQuery.className = 'introjsFloatingElement';
 
             document.body.appendChild(floatingElementQuery);
@@ -100,6 +101,7 @@
 
           currentItem.element  = floatingElementQuery;
           currentItem.position = 'floating';
+          
         }
 
         if (currentItem.element != null) {
@@ -233,6 +235,7 @@
    * @method _nextStep
    */
   function _nextStep() {
+    var that = this;
     this._direction = 'forward';
 
     if (typeof (this._currentStep) === 'undefined') {
@@ -256,7 +259,7 @@
       this._introBeforeChangeCallback.call(this, nextStep.element);
     }
 
-    _showElement.call(this, nextStep);
+    setTimeout(function(){ _showElement.call(that, nextStep) }, 100);
   }
 
   /**
@@ -266,6 +269,7 @@
    * @method _nextStep
    */
   function _previousStep() {
+    var that = this;
     this._direction = 'backward';
 
     if (this._currentStep === 0) {
@@ -277,7 +281,7 @@
       this._introBeforeChangeCallback.call(this, nextStep.element);
     }
 
-    _showElement.call(this, nextStep);
+    setTimeout(function(){ _showElement.call(that, nextStep) }, 100);
   }
 
   /**
@@ -391,6 +395,9 @@
 
     var currentTooltipPosition = this._introItems[this._currentStep].position;
     switch (currentTooltipPosition) {
+      case 'none':
+        tooltipLayer.style.display = 'none';
+        break;
       case 'top':
         tooltipLayer.style.left = '15px';
         tooltipLayer.style.top = '-' + (_getOffset(tooltipLayer).height + 10) + 'px';
@@ -449,7 +456,7 @@
     }
 
     if (typeof (this._introTourDetails) !== 'undefined') {
-        this._introTourDetails.call(this, this._direction, this._currentStep, targetElement.element);
+        this._introTourDetails.call(this, this._direction, this._currentStep, targetElement.element, this._options);
     }
 
     var self = this,
@@ -481,7 +488,8 @@
 
       //remove old classes
       var oldShowElement = document.querySelector('.introjs-showElement');
-      oldShowElement.className = oldShowElement.className.replace(/introjs-[a-zA-Z]+/g, '').replace(/^\s+|\s+$/g, '');
+      if (oldShowElement)
+        oldShowElement.className = oldShowElement.className.replace(/introjs-[a-zA-Z]+/g, '').replace(/^\s+|\s+$/g, '');
       //we should wait until the CSS3 transition is competed (it's 0.3 sec) to prevent incorrect `height` and `width` calculation
       if (self._lastShowElementTimer) {
         clearTimeout(self._lastShowElementTimer);
@@ -502,7 +510,7 @@
 
         //show the tooltip
         oldtooltipContainer.style.opacity = 1;
-      }, 350);
+      }, 500);
 
     } else {
       var helperLayer       = document.createElement('div'),
@@ -665,9 +673,9 @@
 
     if (!_elementInViewport(targetElement.element)) {
       var rect = targetElement.element.getBoundingClientRect(),
-        winHeight=_getWinSize().height,
+        winHeight =_getWinSize().height,
         top = rect.bottom - (rect.bottom - rect.top),
-        bottom = rect.bottom - winHeight;
+        bottom = Math.min(rect.bottom - winHeight, rect.top - 130);
 
       //Scroll up
       if (top < 0 || targetElement.element.clientHeight > winHeight) {
