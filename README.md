@@ -326,6 +326,28 @@ introJs().onafterchange(function(targetElement) {
 ````
 
 -----
+
+###introJs.ontourguide(direction, step, element)
+
+Given callback function will be called after starting a new step of introduction. The callback function receives the element of the new step as an argument.
+
+
+**Parameters:**
+ - Direction: forward or backward 
+ - Step: Numeric digit starting from 0 (PS, you can increment to match proper steps)
+ - Element: Selected target element class, similiar to onchange callback events
+
+**Returns:**
+ - introJs object.
+
+**Example:**
+```javascript
+introJs().ontourguide (direction, step, element) {
+  alert("I'm touring current", direction, "on step", step, "for selector", element);
+});
+````
+
+-----
 ###Attributes:
  - `data-intro`: The tooltip text of step
  - `data-step`: Optionally define the number (priority) of step
