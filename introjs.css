@@ -150,6 +150,7 @@ tr.introjs-showElement > th {
 }
 
 .introjs-tooltipbuttons {
+  display: none;
   text-align: right;
 }
 
@@ -192,7 +193,6 @@ tr.introjs-showElement > th {
 .introjs-button:hover {
   border-color: #bcbcbc;
   text-decoration: none;
-  box-shadow: 0px 1px 1px #e3e3e3;
 }
 
 .introjs-button:focus,
@@ -210,8 +210,14 @@ tr.introjs-showElement > th {
 }
 
 .introjs-skipbutton {
-  margin-right: 5px;
-  color: #7a7a7a;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 15% !important;
+  text-align: center !important;
+  border: none;
+  background: white;
+  margin: 5px;
 }
 
 .introjs-prevbutton {

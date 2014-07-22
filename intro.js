@@ -57,7 +57,9 @@
       /* Scroll to highlighted element? */
       scrollToElement: true,
       /* Set the overlay opacity */
-      overlayOpacity: 0.8
+      overlayOpacity: 0.8,
+      /* Set the button action visibility */
+      showButtons: true
     };
   }
 
@@ -451,6 +453,10 @@
    */
   function _showElement(targetElement) {
 
+    window.onhashchange = function(event) {
+      console.log('>>>>>>>>onhashchange>>>>>>>', document.location, event, window.history)
+    }
+
     if (typeof (this._introChangeCallback) !== 'undefined') {
         this._introChangeCallback.call(this, targetElement.element);
     }
@@ -622,7 +628,7 @@
         _exitIntro.call(self, self._targetElement);
       };
 
-      buttonsLayer.appendChild(skipTooltipButton);
+      tooltipLayer.appendChild(skipTooltipButton);
 
       //in order to prevent displaying next/previous button always
       if (this._introItems.length > 1) {
@@ -941,7 +947,13 @@
         throw new Error('Provided callback for onexit was not a function.');
       }
       return this;
-    }
+    },
+    ontooltipbuttons: function(visible) {
+      if (!visible)
+        setTimeout(function(){document.getElementsByClassName('introjs-tooltipbuttons')[0].style.display = 'none';}, 100);
+      else
+        setTimeout(function(){document.getElementsByClassName('introjs-tooltipbuttons')[0].style.display = 'block';}, 100);
+    } 
   };
 
   exports.introJs = introJs;
