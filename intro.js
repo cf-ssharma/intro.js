@@ -453,10 +453,6 @@
    */
   function _showElement(targetElement) {
 
-    window.onhashchange = function(event) {
-      console.log('>>>>>>>>onhashchange>>>>>>>', document.location, event, window.history)
-    }
-
     if (typeof (this._introChangeCallback) !== 'undefined') {
         this._introChangeCallback.call(this, targetElement.element);
     }
@@ -516,7 +512,7 @@
 
         //show the tooltip
         oldtooltipContainer.style.opacity = 1;
-      }, 500);
+      }, 250);
 
     } else {
       var helperLayer       = document.createElement('div'),
@@ -555,7 +551,7 @@
           self.goToStep(this.getAttribute('data-stepnumber'));
         };
 
-        if (i === 0) anchorLink.className = "active";
+        if (i === (targetElement.step-1)) anchorLink.className = "active";
 
         anchorLink.href = 'javascript:void(0);';
         anchorLink.innerHTML = "&nbsp;";
@@ -661,7 +657,8 @@
 
     var currentElementPosition = _getPropValue(targetElement.element, 'position');
     if (currentElementPosition !== 'absolute' &&
-        currentElementPosition !== 'relative') {
+        currentElementPosition !== 'relative' &&
+        currentElementPosition !== 'fixed') {
       //change to new intro item
       targetElement.element.className += ' introjs-relativePosition';
     }
@@ -800,7 +797,7 @@
     setTimeout(function() {
       styleText += 'opacity: .3;';
       overlayLayer.setAttribute('style', styleText);
-    }, 10);
+    }, 100);
     return true;
   }
 
